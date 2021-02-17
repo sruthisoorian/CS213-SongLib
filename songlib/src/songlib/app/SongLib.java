@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import songlib.view.songlibController;
 
-public class songLib extends Application {
+public class SongLib extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
