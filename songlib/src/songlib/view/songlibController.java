@@ -36,9 +36,62 @@ public class songlibController {
 	private Song selectedSong;
 	
 	public void start () {
-		Song ariana = new Song("Monopoly", "Ariana Grande & Victoria Monet", "Single", "2019");
-		obsList = FXCollections.observableArrayList(ariana);
+		obsList = FXCollections.observableArrayList();
 		songLV.setItems(obsList);
+		
+		songLV.getSelectionModel().selectedIndexProperty().addListener((obsList, oldVal, newVal) -> displaySongs());
+		
+		try {
+			
+			File songFile = new File("src/songFile.csv");
+			
+			if(!songFile.exists()) {
+				songFile.createNewFile();
+			}
+			
+			BufferedReader bf = new BufferedReader(new FileReader(songFile));
+			
+			String line;
+			
+			while((line = bf.readLine())!= null) {
+				String [] parser = line.split(",");
+				
+				Song s = new Song(parser[0], parser[1], parser[2], parser[3]);
+				
+				obsList.add(s);
+			}
+			
+			songLV.setItems(obsList);
+			
+			if(!obsList.isEmpty()) {
+				selectedSong = obsList.get(0);
+				songLV.requestFocus();
+				songLV.getSelectionModel();
+				songLV.getFocusModel();
+			}
+			
+			bf.close();
+			
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	} //end of start method
+	
+	public void displaySongs() {
+		Song s = songLV.getSelectionModel().getSelectedItem();
+		
+		selectedSong = s;
+		
+		if(selectedSong == null) {
+			return;
+		}
+		else {
+			songL.setText(selectedSong.getTitle());
+			artistL.setText(selectedSong.getArtist());
+			albumL.setText(selectedSong.getAlbum());
+			yearL.setText(selectedSong.getYear());
+		}
 	}
 
 }
