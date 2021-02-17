@@ -58,7 +58,7 @@ public class Song implements Comparable<Song> {
 	//Overridden toString: returns string version of SO
 	@Override
 	public String toString() {
-		return "Song: " + title + ",  Artist: " + artist + ",  Album: " + album + ",  Year: " + year;
+		return "Song: " + title + "     Artist: " + artist;
 	}
 	
 	//Overridden compareTo: Checks title and then artist for duplicates.
