@@ -1,13 +1,19 @@
 package songlib.view;
 
 //import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+
+import songlib.app.Song;
+import java.io.*;
+import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 
 public class songlibController {
 	@FXML Button addB;
@@ -23,12 +29,15 @@ public class songlibController {
 	@FXML Label artistL;
 	@FXML Label albumL;
 	@FXML Label yearL;
-	@FXML ListView<String> songLV;
+	@FXML ListView<Song> songLV;
 	
-	private ObservableList<String> obsList;
+	private ObservableList<Song> obsList;
+	
+	private Song selectedSong;
 	
 	public void start () {
-		obsList = FXCollections.observableArrayList("nasty - Ariana Grande",  "my future - Billie Eilish");
+		Song ariana = new Song("Monopoly", "Ariana Grande & Victoria Monet", "Single", "2019");
+		obsList = FXCollections.observableArrayList(ariana);
 		songLV.setItems(obsList);
 	}
 
