@@ -35,8 +35,13 @@ public class songlibController {
 	
 	private Song selectedSong;
 	
+	Song addedSong;
+	
 	public void start () {
-		obsList = FXCollections.observableArrayList();
+		Song hello = new Song ("hello", "Adele", "25", "bro idk");
+		Song starships = new Song("starships", "Nicki MInaj", "Pink Friday", "idk 2006?");
+		Song stressed = new Song("stressed out", "21 Pilots", "blurryface", "idk");
+		obsList = FXCollections.observableArrayList(hello, starships, stressed);
 		songLV.setItems(obsList);
 		
 		songLV.getSelectionModel().selectedIndexProperty().addListener((obsList, oldVal, newVal) -> displaySongs());
@@ -54,7 +59,7 @@ public class songlibController {
 			String line;
 			
 			while((line = bf.readLine())!= null) {
-				String [] parser = line.split(",");
+				String [] parser = line.split("|");
 				
 				Song s = new Song(parser[0], parser[1], parser[2], parser[3]);
 				
@@ -92,6 +97,7 @@ public class songlibController {
 			albumL.setText(selectedSong.getAlbum());
 			yearL.setText(selectedSong.getYear());
 		}
-	}
+	}// end of displaySongs method
+	
 
-}
+}//end of Controller class
