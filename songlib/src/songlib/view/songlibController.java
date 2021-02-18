@@ -172,10 +172,25 @@ public class songlibController {
 		addB.setDisable(true);
 		editB.setDisable(true);
 		deleteB.setDisable(true);
-		songTF.setDisable(false);
-		artistTF.setDisable(false);
-		albumTF.setDisable(false);
-		yearTF.setDisable(false);
+		songTF.setDisable(true);
+		artistTF.setDisable(true);
+		albumTF.setDisable(true);
+		yearTF.setDisable(true);
+		//select a song
+		Song toDelete = songLV.getSelectionModel().getSelectedItem();
+		//auto input info into text field
+		songTF.setText(toDelete.getTitle());
+		artistTF.setText(toDelete.getArtist());
+		if(toDelete.getAlbum().compareTo("[Album N/A]")==0) {
+			albumTF.setText("");
+		}else {
+			albumTF.setText(toDelete.getAlbum());
+		}
+		if(toDelete.getYear().compareTo("[Year N/A]")==0) {
+			yearTF.setText("");
+		}else {
+			yearTF.setText(toDelete.getYear());
+		}
 	}
 	
 	@FXML
@@ -191,7 +206,7 @@ public class songlibController {
 		}else if(actselect == 2) {
 			editEvent();
 		}else if(actselect == 3) {
-			
+			deleteEvent();
 		}
 		
 		reset();
@@ -215,6 +230,30 @@ public class songlibController {
 		yearTF.setDisable(true);
 	}
 	
+	public void deleteEvent () {
+		//delete selected song
+		Song toDelete = songLV.getSelectionModel().getSelectedItem();
+		int idx = delFindSongIndex(obsList, toDelete);
+		obsList.remove(toDelete);
+		//if there is a next song, display that
+		if(obsList.size() >= idx+1) {
+			selectedSong = obsList.get(idx);
+			songLV.requestFocus();
+			songLV.getSelectionModel().select(idx);
+			songLV.getFocusModel().focus(idx);
+		}else if (obsList.size() < idx+1 && obsList.size() > 0){//if there is no next, display previous
+			selectedSong = obsList.get(idx-1);
+			songLV.requestFocus();
+			songLV.getSelectionModel().select(idx-1);
+			songLV.getFocusModel().focus(idx-1);
+		}else if (obsList.size() == 0) {
+			songL.setText("[Song N/A]");
+			artistL.setText("[Artist N/A]");
+			albumL.setText("[Album N/A]");
+			yearL.setText("[Year N/A]");
+		}
+		writeToFile();
+	}
 	
 	public void addEvent () {
 		String songtext = songTF.getText();
@@ -275,6 +314,16 @@ public class songlibController {
 		}
 		return i;
 	}//end of findSongIndex
+	
+	public int delFindSongIndex(ObservableList<Song> obl, Song s) {
+		int i;
+		for(i = 0; i < obl.size(); i++) {
+			if(obl.get(i).compareTo(s) == 0) {
+				return i;
+			}
+		}
+		return i;
+	}//end of delFindSongIndex
 	
 	//after they hit confirm
 		public void editEvent () {
