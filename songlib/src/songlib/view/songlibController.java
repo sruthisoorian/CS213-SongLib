@@ -249,9 +249,12 @@ public class songlibController {
 			return -1;
 		}
 		else {
-			//put in confirm or cancel here
 			obsList.add(idx, addSong);
 			writeToFile();
+			selectedSong = obsList.get(idx);
+			songLV.requestFocus();
+			songLV.getSelectionModel().select(idx);
+			songLV.getFocusModel().focus(idx);
 		}
 		
 		return 0;
