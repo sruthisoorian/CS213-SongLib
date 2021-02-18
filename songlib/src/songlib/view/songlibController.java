@@ -37,10 +37,10 @@ public class songlibController {
 	
 	private Song selectedSong; //selected song
 	
-	Song addedSong; //addedsong
+	Song addedSong; //added song
 	
 	public void start () {
-		//confirm and cancel buttons are disabled, so are all textfields
+		//confirm and cancel buttons are disabled, so are all text fields
 		cancelB.setDisable(true);
 		confirmB.setDisable(true);
 		songTF.setDisable(true);
@@ -48,7 +48,7 @@ public class songlibController {
 		albumTF.setDisable(true);
 		yearTF.setDisable(true);
 		
-		//Initialize ArrayList and Listview
+		//Initialize ArrayList and ListView
 		obsList = FXCollections.observableArrayList();
 		songLV.setItems(obsList);
 		
@@ -145,7 +145,22 @@ public class songlibController {
 		artistTF.setDisable(false);
 		albumTF.setDisable(false);
 		yearTF.setDisable(false);
-		
+		//select a song
+		Song toEdit = songLV.getSelectionModel().getSelectedItem();
+		//auto input info into text field
+		songTF.setText(toEdit.getTitle());
+		artistTF.setText(toEdit.getArtist());
+		if(toEdit.getAlbum().compareTo("[Album N/A]")==0) {
+			albumTF.setText("");
+		}else {
+			albumTF.setText(toEdit.getAlbum());
+		}
+		if(toEdit.getYear().compareTo("[Year N/A]")==0) {
+			yearTF.setText("");
+		}else {
+			yearTF.setText(toEdit.getYear());
+		}
+			
 	}//end of editClick
 	
 	@FXML
@@ -161,8 +176,7 @@ public class songlibController {
 		artistTF.setDisable(false);
 		albumTF.setDisable(false);
 		yearTF.setDisable(false);
-		
-	}//end of delete Click
+	}
 	
 	@FXML
 	public void cancelClick(ActionEvent e) {
@@ -174,6 +188,10 @@ public class songlibController {
 	public void confirmClick(ActionEvent e) {
 		if (actselect == 1) {
 			addEvent();
+		}else if(actselect == 2) {
+			editEvent();
+		}else if(actselect == 3) {
+			
 		}
 		
 		reset();
@@ -195,7 +213,6 @@ public class songlibController {
 		artistTF.setDisable(true);
 		albumTF.setDisable(true);
 		yearTF.setDisable(true);
-		
 	}
 	
 	
@@ -255,6 +272,48 @@ public class songlibController {
 		}
 		return i;
 	}//end of findSongIndex
+	
+	//after they hit confirm
+		public void editEvent () {
+			Song toEdit = songLV.getSelectionModel().getSelectedItem();
+			//user edits song
+			//save info in a temp
+			Song temp = new Song(songTF.getText(), artistTF.getText(), albumTF.getText(), yearTF.getText());
+			if(temp.getAlbum().isEmpty()) {
+				temp.setAlbum("[Album N/A]");
+			}
+			if(temp.getYear().isEmpty()) {
+				temp.setYear("[Year N/A]");
+			}
+			//make sure it does not conflict
+			//if title and artist info in text field exists in observable list, do not allow
+			int check = editFindSongIndex(obsList, temp);
+			if(check == -1) {
+				System.out.println("Error: Song already exists!");
+				return;
+			}
+			//delete song from list
+			obsList.remove(toEdit);
+			//add back the song w new info
+			addSong(temp);
+		}//end of editEvent method
+	
+	public int editFindSongIndex(ObservableList<Song> obl, Song s) {
+		int i;
+		for(i = 0; i < obl.size(); i++) {
+			if(obl.get(i).compareTo(s) == 0 //skips comparing selected song for edit
+					&& obl.get(i).compareTo(songLV.getSelectionModel().getSelectedItem())!=0) {
+				return -1;
+			}
+			else if(obl.get(i).compareTo(s) > 0) {
+				return i;
+			}
+			else {
+				continue;
+			}
+		}
+		return i;
+	}//end
 	
 	public void writeToFile() {
 		BufferedWriter bw = null;
