@@ -42,8 +42,8 @@
                   <TextField fx:id="artistTF" alignment="CENTER" promptText="Artist (required)" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   <TextField fx:id="yearTF" alignment="CENTER" promptText="Year" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                   <Button fx:id="deleteB" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteClick" prefHeight="25.0" prefWidth="73.0" text="Delete" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                  <Button fx:id="cancelB" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelClick" prefHeight="25.0" prefWidth="90.0" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                  <Button fx:id="confirmB" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#confirmClick" prefHeight="25.0" prefWidth="90.0" text="Confirm" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                  <Button fx:id="cancelB" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelClick" prefHeight="25.0" prefWidth="120.0" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <Button fx:id="confirmB" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#confirmClick" prefHeight="25.0" prefWidth="120.0" text="Confirm" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -79,10 +79,10 @@
               </rowConstraints>
                <children>
                   <Label contentDisplay="CENTER" text="Currently Playing:" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Label fx:id="songL" alignment="CENTER" contentDisplay="CENTER" text="Song" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <Label fx:id="artistL" alignment="CENTER" contentDisplay="CENTER" text="Artist" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                  <Label fx:id="albumL" alignment="CENTER" contentDisplay="CENTER" text="Album" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                  <Label fx:id="yearL" alignment="CENTER" contentDisplay="CENTER" text="Year" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <Label fx:id="songL" alignment="CENTER" contentDisplay="CENTER" text="[Song N/A]" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Label fx:id="artistL" alignment="CENTER" contentDisplay="CENTER" text="[Artist N/A]" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Label fx:id="albumL" alignment="CENTER" contentDisplay="CENTER" text="[Album N/A]" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <Label fx:id="yearL" alignment="CENTER" contentDisplay="CENTER" text="[Year N/A]" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
          </left>

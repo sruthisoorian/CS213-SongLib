@@ -5,6 +5,8 @@ package songlib.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
@@ -52,8 +54,8 @@ public class songlibController {
 		obsList = FXCollections.observableArrayList();
 		songLV.setItems(obsList);
 		
-		//get the listeners up and running
-		songLV.getSelectionModel().selectedIndexProperty().addListener((obsList, oldVal, newVal) -> displaySongs());
+		//get the listeners working for all songs in ListView
+		songLV.getSelectionModel().selectedIndexProperty().addListener((obsList, oldVal, newVal) -> displayCurrentSong());
 		
 		//create buffered reader object
 		BufferedReader bf = null;
@@ -80,7 +82,7 @@ public class songlibController {
 			
 			songLV.setItems(obsList);
 			
-			if(!obsList.isEmpty()) {
+			if(obsList.isEmpty() == false) {
 				selectedSong = obsList.get(0);
 				songLV.requestFocus();
 				songLV.getSelectionModel().select(0);
@@ -95,7 +97,7 @@ public class songlibController {
 		}
 	} //end of start method
 	
-	public void displaySongs() {
+	public void displayCurrentSong() {
 		Song s = songLV.getSelectionModel().getSelectedItem();
 		
 		selectedSong = s;
@@ -109,7 +111,7 @@ public class songlibController {
 			albumL.setText(selectedSong.getAlbum());
 			yearL.setText(selectedSong.getYear());
 		}
-	}// end of displaySongs method
+	}// end of displayCurrentSong method
 	
 	@FXML
 	public void addClick(ActionEvent e) {
@@ -117,6 +119,7 @@ public class songlibController {
 		
 		cancelB.setDisable(false);
 		confirmB.setDisable(false);
+		confirmB.setText("Confirm Add");
 		addB.setDisable(true);
 		editB.setDisable(true);
 		deleteB.setDisable(true);
@@ -138,6 +141,7 @@ public class songlibController {
 		
 		cancelB.setDisable(false);
 		confirmB.setDisable(false);
+		confirmB.setText("Confirm Edit");
 		addB.setDisable(true);
 		editB.setDisable(true);
 		deleteB.setDisable(true);
@@ -145,6 +149,7 @@ public class songlibController {
 		artistTF.setDisable(false);
 		albumTF.setDisable(false);
 		yearTF.setDisable(false);
+		songLV.setDisable(true);
 		//select a song
 		Song toEdit = songLV.getSelectionModel().getSelectedItem();
 		//auto input info into text field
@@ -169,13 +174,20 @@ public class songlibController {
 		
 		cancelB.setDisable(false);
 		confirmB.setDisable(false);
+		confirmB.setText("Confirm Delete");
 		addB.setDisable(true);
 		editB.setDisable(true);
 		deleteB.setDisable(true);
-		songTF.setDisable(true);
-		artistTF.setDisable(true);
-		albumTF.setDisable(true);
-		yearTF.setDisable(true);
+		songTF.setDisable(false);
+		artistTF.setDisable(false);
+		albumTF.setDisable(false);
+		yearTF.setDisable(false);
+		songTF.setEditable(false);
+		artistTF.setEditable(false);
+		albumTF.setEditable(false);
+		yearTF.setEditable(false);
+		
+		songLV.setDisable(true);
 		//select a song
 		Song toDelete = songLV.getSelectionModel().getSelectedItem();
 		//auto input info into text field
@@ -221,6 +233,7 @@ public class songlibController {
 		yearTF.setText("");
 		cancelB.setDisable(true);
 		confirmB.setDisable(true);
+		confirmB.setText("Confirm");
 		addB.setDisable(false);
 		editB.setDisable(false);
 		deleteB.setDisable(false);
@@ -228,6 +241,11 @@ public class songlibController {
 		artistTF.setDisable(true);
 		albumTF.setDisable(true);
 		yearTF.setDisable(true);
+		songLV.setDisable(false);
+		songTF.setEditable(true);
+		artistTF.setEditable(true);
+		albumTF.setEditable(true);
+		yearTF.setEditable(true);
 	}
 	
 	public void deleteEvent () {
@@ -252,7 +270,7 @@ public class songlibController {
 			albumL.setText("[Album N/A]");
 			yearL.setText("[Year N/A]");
 		}
-		writeToFile();
+		writeFile();
 	}
 	
 	public void addEvent () {
@@ -263,7 +281,8 @@ public class songlibController {
 		
 		
 		if(songTF.getText().isEmpty() || artistTF.getText().isEmpty()) {
-			System.out.println("Alert: Need Song & Artist");
+			System.out.println("Alert: Need Song & Artist");  //Create Alert 1
+			makeAlert(1);
 			return;
 		}
 		if(albumTF.getText().isEmpty()) {
@@ -279,17 +298,16 @@ public class songlibController {
 	}//end of addEvent method
 	
 	public int addSong(Song addSong) {
-		String title = addSong.getTitle();
-		String artist = addSong.getArtist();
-		int idx = findSongIndex(obsList, addSong);
+		int idx = addFindSongIndex(obsList, addSong);
 		
 		if(idx == -1) {
-			System.out.println("Alert");
+			System.out.println("Alert"); //Create Alert 2
+			makeAlert(2);
 			return -1;
 		}
 		else {
 			obsList.add(idx, addSong);
-			writeToFile();
+			writeFile();
 			selectedSong = obsList.get(idx);
 			songLV.requestFocus();
 			songLV.getSelectionModel().select(idx);
@@ -299,7 +317,7 @@ public class songlibController {
 		return 0;
 	}//end of addSong method
 	
-	public int findSongIndex(ObservableList<Song> obl, Song s) {
+	public int addFindSongIndex(ObservableList<Song> obl, Song s) {
 		int i;
 		for(i = 0; i < obl.size(); i++) {
 			if(obl.get(i).compareTo(s) == 0) {
@@ -313,7 +331,7 @@ public class songlibController {
 			}
 		}
 		return i;
-	}//end of findSongIndex
+	}//end of addFindSongIndex
 	
 	public int delFindSongIndex(ObservableList<Song> obl, Song s) {
 		int i;
@@ -341,7 +359,8 @@ public class songlibController {
 			//if title and artist info in text field exists in observable list, do not allow
 			int check = editFindSongIndex(obsList, temp);
 			if(check == -1) {
-				System.out.println("Error: Song already exists!");
+				System.out.println("Error: Song already exists!"); //Create Alert 3
+				makeAlert(3);
 				return;
 			}
 			//delete song from list
@@ -367,7 +386,7 @@ public class songlibController {
 		return i;
 	}//end
 	
-	public void writeToFile() {
+	public void writeFile() {
 		BufferedWriter bw = null;
 		try {
 			File f = new File("src/songFile.csv");
@@ -397,8 +416,36 @@ public class songlibController {
 			}
 		}
 		
-	}//end of writeToFile method
+	}//end of writeFile method
 	
-	
+	public void makeAlert(int alertType) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Warning Message");
+		String alertHeaderMessage = "";
+		String alertContentMessage = "";
+		
+		if(alertType == 1) {
+			alertHeaderMessage = "Unable to Add Song";
+			alertContentMessage = "You must provide a title and artist to add a song.";
+		}
+		else if(alertType == 2) {
+			alertHeaderMessage = "Duplicate Song";
+			alertContentMessage = "This song already exists in your song library.";
+		}
+		else if(alertType == 3) {
+			alertHeaderMessage = "Duplicate Song";
+			alertContentMessage = "Another song already exists with this title and artist.";
+		}
+		else if(alertType == 4) {
+			alertHeaderMessage = "Unable to Edit Song";
+			alertContentMessage = "Songs must have a title and artist";
+		}
+		
+		alert.setHeaderText(alertHeaderMessage);
+		alert.setContentText(alertContentMessage);
+		alert.showAndWait();
+		return;
+		
+	}//end of makeAlert method
 
 }//end of Controller class
