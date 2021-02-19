@@ -1,3 +1,5 @@
+//Bria Whitt
+//Sruthi Soorian
 package songlib.view;
 
 //import javafx.event.ActionEvent;
@@ -259,11 +261,13 @@ public class songlibController {
 			songLV.requestFocus();
 			songLV.getSelectionModel().select(idx);
 			songLV.getFocusModel().focus(idx);
+			displayCurrentSong();
 		}else if (obsList.size() < idx+1 && obsList.size() > 0){//if there is no next, display previous
 			selectedSong = obsList.get(idx-1);
 			songLV.requestFocus();
 			songLV.getSelectionModel().select(idx-1);
 			songLV.getFocusModel().focus(idx-1);
+			displayCurrentSong();
 		}else if (obsList.size() == 0) {
 			songL.setText("[Song N/A]");
 			artistL.setText("[Artist N/A]");
@@ -349,6 +353,10 @@ public class songlibController {
 			//user edits song
 			//save info in a temp
 			Song temp = new Song(songTF.getText(), artistTF.getText(), albumTF.getText(), yearTF.getText());
+			if(temp.getTitle().isEmpty() || temp.getArtist().isEmpty()) {
+				makeAlert(4);
+				return;
+			}
 			if(temp.getAlbum().isEmpty()) {
 				temp.setAlbum("[Album N/A]");
 			}
