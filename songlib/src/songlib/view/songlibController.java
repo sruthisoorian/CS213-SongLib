@@ -77,7 +77,7 @@ public class songlibController {
 				String [] parser = line.split("@");
 				
 				Song s = new Song(parser[0], parser[1], parser[2], parser[3]);
-				System.out.println(parser[0] + " " + parser[1] + " " +parser[2] + " " +parser[3]);
+				//System.out.println(parser[0] + " " + parser[1] + " " +parser[2] + " " +parser[3]);
 				
 				obsList.add(s);
 			}
@@ -285,7 +285,6 @@ public class songlibController {
 		
 		
 		if(songTF.getText().isEmpty() || artistTF.getText().isEmpty()) {
-			System.out.println("Alert: Need Song & Artist");  //Create Alert 1
 			makeAlert(1);
 			return;
 		}
@@ -305,7 +304,6 @@ public class songlibController {
 		int idx = addFindSongIndex(obsList, addSong);
 		
 		if(idx == -1) {
-			System.out.println("Alert"); //Create Alert 2
 			makeAlert(2);
 			return -1;
 		}
@@ -367,7 +365,6 @@ public class songlibController {
 			//if title and artist info in text field exists in observable list, do not allow
 			int check = editFindSongIndex(obsList, temp);
 			if(check == -1) {
-				System.out.println("Error: Song already exists!"); //Create Alert 3
 				makeAlert(3);
 				return;
 			}
